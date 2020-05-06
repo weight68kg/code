@@ -90,7 +90,7 @@ implements Map<K,V>, Cloneable, Serializable { }
 * HashMap 继承于 AbstractMap类，实现了Map接口。Map是"key-value键值对"接口，AbstractMap实现了"键值对"的通用函数接口。 
 * HashMap是通过"拉链法"实现的哈希表。它包括几个重要的成员变量：table, size, threshold, loadFactor, modCount。 
 * HashMap是数组+链表+红黑树（JDK1.8增加了红黑树部分）实现的，下面两张图更容易理解结构。 
-![](media/15887547918648.jpg)
+![](media/15887547918648.jpg)￼
 
 * table数组是F(k) 
 * 链表是Hash冲突 
@@ -99,7 +99,7 @@ implements Map<K,V>, Cloneable, Serializable { }
 ###### PUT 
 执行过程先看下面这张图，源码实现以后再说。 
 
-![](media/15887548966971.jpg)
+![](media/15887548966971.jpg)￼
 
 
 1. 判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容 
