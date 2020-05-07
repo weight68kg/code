@@ -1,4 +1,5 @@
-__实现原理__ 线程池，Handler 
+__实现原理__ 线程池，Handler,FutureTask
+ 
 #### Callable 
 ```java 
 @FunctionalInterface 
@@ -80,7 +81,47 @@ public void run() {
     } 
 } 
 ``` 
-可以看到构造方法传入的Callable对象，调用了`call()`方法。 
+可以看到构造方法传入的Callable对象，调用了`call()`方法。 成功会接着调用`set(result)`方法
+
+```java
+protected void set(V v) {
+    if (U.compareAndSwapInt(this, STATE, NEW, COMPLETING)) {
+        outcome = v;
+        U.putOrderedInt(this, STATE, NORMAL); // final state
+        finishCompletion();
+    }
+}
+
+private void finishCompletion() {
+    // assert state > COMPLETING;
+    //执行完就解除线程
+    for (WaitNode q; (q = waiters) != null;) {
+        if (U.compareAndSwapObject(this, WAITERS, q, null)) {
+            for (;;) {
+                Thread t = q.thread;
+                if (t != null) {
+                    q.thread = null;
+                    LockSupport.unpark(t);
+                }
+                WaitNode next = q.next;
+                if (next == null)
+                    break;
+                q.next = null; // unlink to help gc
+                q = next;
+            }
+            break;
+        }
+    }
+
+    done();
+
+    callable = null;        // to reduce footprint
+}
+
+```
+
+最后执行`done()`可以检查是否是取消结束的
+
 #### 线程池 
 有两个线程池，一个是串行线程`SerialExecutor`，一个是并行线程`ThreadPoolExecutor`。默认是串行。 
 先看串行的声明 
@@ -157,7 +198,7 @@ public AsyncTask(@Nullable Looper callbackLooper) {
 ``` 
 构造方法里主要做了三件事： 
 * 声明 Handler 
-* 声明 WorkerRunnable，也就是上米娜提到的 Callable。 
+* 声明 WorkerRunnable，也就是上面提到的 Callable。 
 * 把WorkerRunnable对象传入FutureTask，声明。 
 看 WorkerRunnable具体实现，在`call()`方法中，调用了`doInBackground()`，这也就是异步操作。 
 在看 FutureTask 的`done()`方法，跟踪到源码，可以知道最后完成会调用。回头看`postResultIfNotInvoked()`，最后会调用`postResult()`，并使用handler传递到主线程。 
@@ -239,4 +280,9 @@ Params... params) {
 new AsyncTask().executeOnExecutor(THREAD_POOL_EXECUTOR); 
 ``` 
 
+
+#### 总结
+1. AsyncTask默认是串行
+2. 通过线程池调用`execute()`，传入FutureTask，执行在FutureTask传入的WorkerRunnable
+实例，进行子线程操作。`doInBackgroud()返回的结果通过Handler再发送到主线程回调`onPostExecute()`方法
 
