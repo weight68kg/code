@@ -1,6 +1,7 @@
 [TOC] 
 #### Looper 
 ###### 创建 
+
 每个线程只允许创建一个`Looper`,创建的方法是 _Looper.prepare()_ ，得到的`Looper实例`会存在`ThreadLocal`中。 
 
 ```java 
