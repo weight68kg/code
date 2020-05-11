@@ -27,7 +27,7 @@
 软件设计模式（Software Design Pattern），又称设计模式，是一套被反复使用、多数人知晓的、经过分类编目的、代码设计经验的总结。它描述了在软件设计过程中的一些不断重复发生的问题，以及该问题的解决方案。也就是说，它是解决特定问题的一系列套路，是前辈们的代码设计经验的总结，具有一定的普遍性，可以反复使用。其目的是为了提高代码的可重用性、代码的可读性和代码的可靠性。
 
 2. 学习设计模式的意义
-__设计模式的本质是面向对象设计原则的实际运用，是对类的封装性、继承性和多态性以及类的关联关系和组合关系的充分理解。__正确使用设计模式具有以下优点。
+__设计模式的本质是面向对象设计原则的实际运用，是对类的封装性、继承性和多态性以及类的关联关系和组合关系的充分理解。__ 正确使用设计模式具有以下优点。
 
 	•	可以提高程序员的思维能力、编程能力和设计能力。
 	•	使程序设计更加标准化、代码编制更加工程化，使软件开发效率大大提高，从而缩短软件的开发周期。
@@ -98,9 +98,193 @@ __设计模式的本质是面向对象设计原则的实际运用，是对类的
 	必须指出，这 23 种设计模式不是孤立存在的，很多模式之间存在一定的关联关系，在大的系统开发中常常同时使用多种设计模式，希望读者认真学好它们。
 
 # UML中的类图及类图之间的关系
+## 统一建模语言介绍
+__统一建模语言（Unified Modeling Language，UML）是用来设计软件蓝图的可视化建模语言，__ 1997 年被国际对象管理组织（OMG）采纳为面向对象的建模语言的国际标准。 __它的特点是简单、统一、图形化、能表达软件设计中的动态与静态信息。__
 
-#面向对象设计原则
+统一建模语言能为软件开发的所有阶段提供模型化和可视化支持。而且融入了软件工程领域的新思想、新方法和新技术，使软件设计人员沟通更简明，进一步缩短了设计时间，减少开发成本。它的应用领域很宽，不仅适合于一般系统的开发，而且适合于并行与分布式系统的建模。
+
+UML 从目标系统的不同角度出发，定义了用 __例图、类图、对象图、状态图、活动图、时序图、协作图、构件图、部署图等 9 种图。__
+
+本教程主要介绍软件设计模式中经常用到的类图，以及类之间的关系。另外，在实验部分将简单介绍 UML 建模工具的使用方法，当前业界使用最广泛的是 Rational Rose。使用 Umlet 的人也很多，它是一个轻量级的开源 UML 建模工具，简单实用，常用于小型软件系统的开发与设计。
+
+## 类、接口和类图
+
+1. 类
+类（Class）是指具有相同属性、方法和关系的对象的抽象，它封装了数据和行为，是面向对象程序设计（OOP）的基础，具有封装性、继承性和多态性等三大特性。在 UML 中，类使用包含类名、属性和操作且带有分隔线的矩形来表示。
+
+(1) 类名（Name）是一个字符串，例如，Student。
+
+(2) 属性（Attribute）是指类的特性，即类的成员变量。UML 按以下格式表示：
+
+```
+[可见性]属性名:类型[=默认值]
+```
+
+例如：-name:String
+
+__注意：“可见性”表示该属性对类外的元素是否可见，包括公有（Public）、私有（Private）、受保护（Protected）和朋友（Friendly）4 种，在类图中分别用符号+、-、#、~表示。__
+
+(3) 操作（Operations）是类的任意一个实例对象都可以使用的行为，是类的成员方法。UML 按以下格式表示：
+
+```
+[可见性]名称(参数列表)[:返回类型]
+```
+
+例如：+display():void。
+
+图 1 所示是学生类的 UML 表示。
+![](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuGh9BCb9LL1wEdkVeK9mIMbAQbw9mlEDkvMuk99p4ekBOMBLNBeAUVbMEVbvwI1MOcwgLN19KIQOLvoSaP-V0-5ZofRab-Ga1YVd5wLQfUNa9vPmSMahf6GM5-GaLcfeMfNbPwPmrN8vfEQb05q30000)
+<details>
+@startuml
+Title "图1 Student 类"
+
+class Student{
+- no:long
+- name:String
+- school:String
+- name:String
+- totlaScore:float
+
++ display():void
+}
+@enduml
+</details>
+
+2. 接口
+接口（Interface）是一种特殊的类，它具有类的结构但不可被实例化，只可以被子类实现。它包含抽象操作，但不包含属性。它描述了类或组件对外可见的动作。在 UML 中，接口使用一个带有名称的小圆圈来进行表示。
+
+![](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuGh9BCb9LNWwUv-HWdjHOa66mhE-fK_x5tDbvfMa5gKb9gT2XAkvkBGLKl9Bau2AqrDB78jI4pKqKOG2KeioSrE1ce3YjLmEgNafGEC1)
+<details>
+@startuml
+Title 图2 Graph 接口
+interface Graph{
+
++ double getArea()
++ double getPerimeter()
+}
+@enduml</details>
+
+图 2 所示是图形类接口的 UMDL 表示。
+
+3. 类图
+类图（ClassDiagram）是用来显示系统中的类、接口、协作以及它们之间的静态结构和关系的一种静态模型。它主要用于描述软件系统的结构化设计，帮助人们简化对软件系统的理解，它是系统分析与设计阶段的重要产物，也是系统编码与测试的重要模型依据。
+
+类图中的类可以通过某种编程 语言直接实现。类图在软件系统开发的整个生命周期都是有效的，它是面向对象系统的建模中最常见的图。图 3 所示是“计算长方形和圆形的周长与面积”的类图，图形接口有计算面积和周长的抽象方法，长方形和圆形实现这两个方法供访问类调用。
+
+![](http://www.plantuml.com/plantuml/png/SoWkIImgAStDuGh9BCb9LNWwUv-nmgE6EI_MBNo-RlhBgVkVJTlvTE-YfvDwdivf0pAUpsfvEd45KFp9ZhwNSnSzNxx-KSDSeE3pZRk1Mhcuk3BpIbABqXAJKnNSYn8BChYISnABYnM2KfDB7FFISrAXVEVCekJIdCGY63SdCpMl1AWRh4V1faPF3w550KaKhX4c1XI2QCQmkPfBMo4zjSInA3LHGrF1IY4blpGf9nKY691Qb9cR2bIEB5FBXUxOQYvTXPpKlFII3BWge4XvPWgI0Bcsm7q2igGeCIMpj9WoCn7X2F9vSc8EoFIIL8sI2WKhI8Y0T9JbPwO0rJkavgK08nq0)
+<details>
+@startuml
+Title 图3 “计算长方形和圆形的周长与面积”的类图
+
+
+interface Graph
+class RectAngle
+class Circular
+class Client
+
+
+Graph <|.. RectAngle 
+Graph <|.. Circular
+Graph <.. Client
+
+interface Graph{
++ getArea() : double
++ getPerimeter() : double
+}
+
+class RectAngle{
+- length : double
+- width : double
++ getArea() : double
++ getPerimeter() : double
+}
+
+class Circular{
+- radius : double
++ getArea() : double
++ getPerimeter() : double
+}
+
+class Client{
++ calculate(tx : Graph) : void
+}
+@enduml
+</details>
+
+## 类之间的关系
+
+在软件系统中，类不是孤立存在的，类与类之间存在各种关系。 __根据类与类之间的耦合度从弱到强排列，UML 中的类图有以下几种关系：依赖关系、关联关系、聚合关系、组合关系、泛化关系和实现关系。其中泛化和实现的耦合度相等，它们是最强的。__
+
+1. 依赖关系
+依赖（Dependency）关系是一种使用关系，它是对象之间耦合度最弱的一种关联方式，是临时性的关联。在代码中，某个类的方法通过局部变量、方法的参数或者对静态方法的调用来访问另一个类（被依赖类）中的某些方法来完成一些职责。
+
+在 UML 类图中，依赖关系使用带箭头的虚线来表示，箭头从使用类指向被依赖的类。图 4 所示是人与手机的关系图，人通过手机的语音传送方法打电话。
+
+# 面向对象设计原则
+
+在软件开发中，为了提高软件系统的可维护性和可复用性，增加软件的可扩展性和灵活性，程序员要尽量根据 7 条原则来开发程序，从而提高软件开发效率、节约软件开发成本和维护成本。我们将在下面的几节中依次来介绍这 7 条原则，本节首先介绍开闭原则。
+
 ## 开闭原则
+
+### 开闭原则定义
+开闭原则（Open Closed Principle，OCP）由勃兰特·梅耶（Bertrand Meyer）提出，他在 1988 年的著作《面向对象软件构造》（Object Oriented Software Construction）中提出：软件实体应当对扩展开放，对修改关闭（Software entities should be open for extension，but closed for modification），这就是开闭原则的经典定义。
+
+这里的软件实体包括以下几个部分：
+	1.	项目中划分出的模块
+	2.	类与接口
+	3.	方法
+
+__开闭原则的含义是：当应用的需求改变时，在不修改软件实体的源代码或者二进制代码的前提下，可以扩展模块的功能，使其满足新的需求。__
+
+### 开闭原则作用
+
+开闭原则是面向对象程序设计的终极目标，它使软件实体拥有一定的适应性和灵活性的同时具备稳定性和延续性。具体来说，其作用如下。
+
+1. 对软件测试的影响
+软件遵守开闭原则的话，软件测试时只需要对扩展的代码进行测试就可以了，因为原有的测试代码仍然能够正常运行。
+2. 可以提高代码的可复用性
+粒度越小，被复用的可能性就越大；在面向对象的程序设计中，根据原子和抽象编程可以提高代码的可复用性。
+3. 可以提高软件的可维护性
+遵守开闭原则的软件，其稳定性高和延续性强，从而易于扩展和维护。
+
+### 开原则实现方法
+
+可以通过“抽象约束、封装变化”来实现开闭原则，即通过接口或者抽象类为软件实体定义一个相对稳定的抽象层，而将相同的可变因素封装在相同的具体实现类中。
+
+因为抽象灵活性好，适应性广，只要抽象的合理，可以基本保持软件架构的稳定。而软件中易变的细节可以从抽象派生来的实现类来进行扩展，当软件需要发生变化时，只需要根据需求重新派生一个实现类来扩展就可以了。
+
+下面以 Windows 的桌面主题为例介绍开闭原则的应用。
+
+【例1】Windows 的桌面主题设计。
+
+分析：Windows 的主题是桌面背景图片、窗口颜色和声音等元素的组合。用户可以根据自己的喜爱更换自己的桌面主题，也可以从网上下载新的主题。这些主题有共同的特点，可以为其定义一个抽象类（Abstract Subject），而每个具体的主题（Specific Subject）是其子类。用户窗体可以根据需要选择或者增加新的主题，而不需要修改原代码，所以它是满足开闭原则的，其类图如图 1 所示。
+
+![单例模式(通用类图)](http://www.plantuml.com/plantuml/svg/SoWkIImgAStDuGh9BCb9LL1wsZlroRxkPoiMFjtJh_6oOTRpAIkURzpzTFO-JIKk1QxadCJYOWNddCpKl18e9pWpBpqdjIG_ZuiBpbImqTE3gK9NLisbhG2qj2GpMI4jCoyn1o6ZOAkGbrgEu6je8fGY5AMdbY2huD9LA2ZAB4iiIKNHMCk5ubQ5QYvTNGMWTrxiRqUeqqCrwzcqdK1FlrYt_-NqTK0375BpKe010m00) 
+
+<details>
+@startuml
+Title "Windows的桌面主题类图"
+ 
+class Client
+class Singleton
+
+Singleton <.. Client
+
+class Singleton{
++ static final Singleton = new Singleton()
++ static Singleton getSingleton()
+
+- private Singleton()
+}
+
+class Client {
+-- 通过 Singleton.getSingleton()方式访问
+}
+@enduml
+</details>
+
+
+
 ## 里氏替换原则
 ## 依赖倒置原则
 ## 单一指责原则
