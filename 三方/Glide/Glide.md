@@ -1,3 +1,18 @@
+
+```sequence
+
+Glide->+ Glide:getRetriever
+
+Glide->+ GlideBuild : 
+Note left of Glide: 调用with
+Note over Glide: 
+GlideBuilder -> RequestManagerRetriever:
+RequestManagerRetriever -> RequestManagetFactory :构造函数中初始化factory
+RequestManagetFactory -> RequestManager : build()
+
+
+```
+
 ```mermaid
 sequenceDiagram
 对象A->对象B:中午吃什么？
@@ -13,4 +28,10 @@ participant 对象C
 Note over 对象C: 我自己说了算
 
 
+```
+
+
+
+
+Glide.with(Context)最后返回 RequestManager,其中经过创建 RequestManagerRetriever,
 
