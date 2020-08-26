@@ -1,9 +1,10 @@
 
 ```sequence
 
-Glide->+ Glide:getRetriever
+Glide-> Glide:getRetriever
 
-Glide->+ GlideBuild : 
+Glide-> GlideBuild : 
+activate GlideBuild
 Note left of Glide: 调用with
 Note over Glide: 
 GlideBuilder -> RequestManagerRetriever:
