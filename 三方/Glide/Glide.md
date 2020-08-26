@@ -1,7 +1,10 @@
-```sequence
+```mermaid
+sequenceDiagram
 对象A->对象B:中午吃什么？
 对象B->>对象A: 随便
-
+loop 思考
+    对象A->对象A: 努力搜索
+end
 对象A-->>对象B: 火锅？
 对象B->>对象A: 可以
 Note left of 对象A: 我是一个对象A
