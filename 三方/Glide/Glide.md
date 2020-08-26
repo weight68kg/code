@@ -1,0 +1,13 @@
+```sequence
+对象A->对象B:中午吃什么？
+对象B->>对象A: 随便
+
+对象A-->>对象B: 火锅？
+对象B->>对象A: 可以
+Note left of 对象A: 我是一个对象A
+Note right of 对象B: 我是一个对象B
+participant 对象C
+Note over 对象C: 我自己说了算
+
+
+
